@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlatFinder™ — Get Early Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1a1a1e;
+      --bg2: #212127;
+      --surface: #2a2a32;
+      --orange: #f07c2a;
+      --orange-dim: #c4621f;
+      --navy: #1e3a5f;
+      --white: #f2f0eb;
+      --grey: #9090a0;
+      --border: rgba(240,124,42,0.2);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+    .bg-glow {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(240,124,42,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: linear-gradient(to bottom, rgba(26,26,30,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(8px);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--orange); }
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 60px 56px;
+      max-width: 520px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 0.8s ease both;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--orange);
+    }
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--orange);
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 4rem);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    h1 span { color: var(--orange); }
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--grey);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    .form-group { margin-bottom: 20px; }
+    label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 8px;
+    }
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--orange); }
+    input::placeholder { color: rgba(144,144,160,0.5); }
+    .btn-submit {
+      width: 100%;
+      margin-top: 8px;
+      padding: 16px;
+      background: var(--orange);
+      color: #111;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+    .btn-submit:hover { background: #fff; transform: translateY(-2px); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .message {
+      margin-top: 20px;
+      padding: 14px 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      display: none;
+    }
+    .message.success {
+      display: block;
+      background: rgba(240,124,42,0.1);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+    }
+    .message.error {
+      display: block;
+      background: rgba(200,50,50,0.1);
+      border: 1px solid rgba(200,50,50,0.5);
+      color: #e06060;
+    }
+    .back-link {
+      margin-top: 28px;
+      display: block;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--orange); }
+    .perks {
+      margin-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .perk {
+      display: flex;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: rgba(242,240,235,0.65);
+      line-height: 1.5;
+    }
+    .perk::before {
+      content: '→';
+      color: var(--orange);
+      font-family: 'Space Mono', monospace;
+      flex-shrink: 0;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .card { padding: 40px 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <nav>
+    <a href="flatfinder-landing.html" class="nav-logo">Flat<span>Finder</span> &trade;</a>
+  </nav>
+
+  <div class="card">
+    <p class="eyebrow">Early Access</p>
+    <h1>Join The <span>Waitlist.</span></h1>
+    <p class="subtitle">Be first in line when Benny opens his doors. No spam — just your key to Toronto's hidden rental gems.</p>
+
+    <form id="signup-form">
+      <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" placeholder="First name is fine" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+      </div>
+      <button type="submit" class="btn-submit" id="submit-btn">Secure My Spot &rarr;</button>
+      <div class="message" id="msg"></div>
+    </form>
+
+    <div class="perks">
+      <div class="perk">Priority access when FlatFinder launches in 2026</div>
+      <div class="perk">Zero spam. One email when Benny is ready.</div>
+      <div class="perk">Your data stays yours. No selling, ever.</div>
+    </div>
+
+    <a href="flatfinder-landing.html" class="back-link">&larr; Back to FlatFinder</a>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const SUPABASE_URL = 'https://pkjpmwwhehohaskgjcdt.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_NJkVzEtL4MYgcQP4hKOy3w_ZFZQUCfz';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const form = document.getElementById('signup-form');
+    const btn = document.getElementById('submit-btn');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      btn.disabled = true;
+      btn.textContent = 'Adding you...';
+      msg.className = 'message';
+      msg.style.display = 'none';
+
+      try {
+        const { error } = await supabase
+          .from('waitlist')
+          .insert([{ name, email }]);
+
+        if (error) {
+          if (error.code === '23505') {
+            msg.textContent = "You're already on the list! Benny remembers you.";
+          } else {
+            msg.textContent = 'Something went wrong. Please try again.';
+          }
+          msg.className = 'message error';
+        } else {
+          msg.textContent = "You're on the list! Benny will be in touch when it's time.";
+          msg.className = 'message success';
+          form.reset();
+        }
+      } catch (err) {
+        msg.textContent = 'Network error. Please try again.';
+        msg.className = 'message error';
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Secure My Spot →';
+    });
+  </script>
+</body>
+</html>

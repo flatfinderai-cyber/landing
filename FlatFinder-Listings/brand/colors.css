@@ -1,0 +1,23 @@
+/*
+  brand/colors.css
+  Copyright © 2025–2026 Lila Alexandra Olufemi Inglis Abegunrin
+  FlatFinder: Housing Revolutionised Inc.
+  Patent Pending (CIPO) | Trademarks Pending (CIPO)
+  PROPRIETARY AND CONFIDENTIAL
+*/
+
+:root {
+  /* ── BACKGROUNDS ─────────────────────────────────────────── */
+  --color-bg:          #f1e9d9;   /* Eggshell   — page background          */
+  --color-grid:        #eeebe7;   /* Parchment  — grid lines (widely spaced)*/
+  --color-bg-warm:     #f3e8d9;   /* Antique White — warm section fills     */
+
+  /* ── BRAND ACCENT ────────────────────────────────────────── */
+  --color-accent:      #ec8200;   /* Tiger Orange — ALL CTAs, highlights    */
+
+  /* ── TEXT & SURFACES ─────────────────────────────────────── */
+  --color-primary:     #17181a;   /* Carbon Black — primary text            */
+  --color-surface:     #151414;   /* Onyx         — card / dark surfaces    */
+  --color-link:        #1b65a5;   /* Baltic Blue  — links, interactive      */
+  --color-secondary:   #2c3e50;   /* Charcoal Blue — secondary text/nav     */
+}
