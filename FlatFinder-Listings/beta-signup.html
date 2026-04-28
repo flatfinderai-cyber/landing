@@ -18,11 +18,11 @@
     --muted: #9091a0;
     --dim: #6c6d78;
     --accent: #ef7c2d;
-    --accent-soft: rgba(239,124,45,0.14);
-    --accent-line: rgba(239,124,45,0.55);
+    --accent-soft: rgba(239, 124, 45, 0.14);
+    --accent-line: rgba(239, 124, 45, 0.55);
     --rule: #2f2f37;
-    --error: #e05555;
   }
+
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
@@ -32,10 +32,10 @@
     font-size: 14px;
     line-height: 1.55;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* --- top bar --- */
   .nav {
     display: flex;
     align-items: center;
@@ -47,7 +47,6 @@
     letter-spacing: 0.04em;
     font-size: 14px;
     color: var(--text);
-    text-decoration: none;
   }
   .brand .accent { color: var(--accent); }
   .brand .tm {
@@ -58,11 +57,12 @@
     vertical-align: top;
     font-weight: 400;
   }
+
+  /* --- page layout --- */
   .page {
-    flex: 1;
     display: flex;
     justify-content: center;
-    padding: 48px 24px 64px;
+    padding: 48px 24px 96px;
   }
   .card {
     width: 100%;
@@ -70,7 +70,10 @@
     background: var(--card);
     border-top: 2px solid var(--accent);
     padding: 44px 44px 36px;
+    position: relative;
   }
+
+  /* --- header --- */
   .eyebrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
@@ -82,7 +85,12 @@
     gap: 10px;
     margin-bottom: 18px;
   }
-  .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent); }
+  .eyebrow::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: var(--accent);
+  }
   h1 {
     font-family: 'Archivo Black', sans-serif;
     font-size: 38px;
@@ -92,8 +100,17 @@
     color: var(--text);
   }
   h1 .accent { color: var(--accent); }
-  .lede { color: var(--muted); font-size: 13.5px; line-height: 1.6; margin: 0 0 32px; max-width: 38ch; }
+  .lede {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 0 0 32px;
+    max-width: 38ch;
+  }
+
+  /* --- form --- */
   form { display: block; }
+
   .field-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
@@ -103,7 +120,9 @@
     display: block;
     margin-bottom: 9px;
   }
-  .input {
+
+  .input,
+  textarea {
     width: 100%;
     background: var(--field);
     border: 1px solid var(--field-border);
@@ -116,12 +135,30 @@
     transition: border-color 120ms ease, background 120ms ease;
   }
   .input::placeholder { color: var(--dim); }
-  .input:focus { border-color: var(--accent); background: #30303a; }
-  .input.invalid { border-color: var(--error); }
-  .row { margin-bottom: 18px; }
-  .row.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6); cursor: pointer; opacity: 0.7; }
+  .input:focus,
+  textarea:focus {
+    border-color: var(--accent);
+    background: #30303a;
+  }
+
+  .row {
+    margin-bottom: 18px;
+  }
+  .row.cols-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  /* date input — keep the native picker, normalize the dark styling */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.6);
+    cursor: pointer;
+    opacity: 0.7;
+  }
   input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+
+  /* counter (steppers) for bedrooms/bathrooms/household */
   .counter {
     display: flex;
     align-items: stretch;
@@ -139,8 +176,15 @@
     cursor: pointer;
     transition: background 120ms ease, color 120ms ease;
   }
-  .counter button:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
-  .counter button:disabled { color: var(--dim); cursor: not-allowed; opacity: 0.5; }
+  .counter button:hover:not(:disabled) {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .counter button:disabled {
+    color: var(--dim);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
   .counter .value {
     flex: 1;
     display: flex;
@@ -154,6 +198,8 @@
     border-right: 1px solid var(--field-border);
   }
   .counter .value.text { font-size: 14px; }
+
+  /* consents */
   .consents {
     margin-top: 8px;
     border-top: 1px solid var(--rule);
@@ -173,7 +219,8 @@
   }
   .check input { position: absolute; opacity: 0; pointer-events: none; }
   .check .box {
-    width: 16px; height: 16px;
+    width: 16px;
+    height: 16px;
     border: 1px solid var(--field-border-focus);
     background: var(--field);
     margin-top: 2px;
@@ -182,25 +229,36 @@
     justify-content: center;
     transition: all 120ms ease;
   }
-  .check .box svg { opacity: 0; transform: scale(0.6); transition: all 120ms ease; }
-  .check input:checked ~ .box { background: var(--accent); border-color: var(--accent); }
-  .check input:checked ~ .box svg { opacity: 1; transform: scale(1); }
-  .check input:focus-visible ~ .box { box-shadow: 0 0 0 3px var(--accent-soft); }
-  .check .copy { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
-  .check .copy strong { color: var(--text); font-weight: 500; }
-  .check .copy a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent-line); }
-  .check .copy a:hover { border-bottom-style: solid; }
-  .error-banner {
-    display: none;
-    background: rgba(224,85,85,0.12);
-    border: 1px solid var(--error);
-    color: var(--error);
-    font-size: 12.5px;
-    padding: 12px 14px;
-    margin-top: 16px;
-    line-height: 1.5;
+  .check .box svg {
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 120ms ease;
   }
-  .error-banner.visible { display: block; }
+  .check input:checked ~ .box {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .check input:checked ~ .box svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .check input:focus-visible ~ .box {
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .check .copy {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .check .copy strong { color: var(--text); font-weight: 500; }
+  .check .copy a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent-line);
+  }
+  .check .copy a:hover { border-bottom-style: solid; }
+
+  /* submit */
   .submit {
     margin-top: 28px;
     width: 100%;
@@ -214,19 +272,36 @@
     text-transform: uppercase;
     font-weight: 600;
     cursor: pointer;
-    transition: background 120ms ease, transform 80ms ease, opacity 120ms ease;
+    transition: background 120ms ease, transform 80ms ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
   }
-  .submit:hover:not(:disabled) { background: #ff8c3e; }
-  .submit:active:not(:disabled) { transform: translateY(1px); }
-  .submit:disabled { opacity: 0.6; cursor: not-allowed; }
-  .assurances { margin-top: 28px; display: flex; flex-direction: column; gap: 9px; }
-  .assurance { font-size: 12.5px; color: var(--muted); display: flex; gap: 12px; align-items: flex-start; }
+  .submit:hover { background: #ff8c3e; }
+  .submit:active { transform: translateY(1px); }
+
+  /* assurances */
+  .assurances {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .assurance {
+    font-size: 12.5px;
+    color: var(--muted);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
   .assurance .arrow { color: var(--accent); flex: 0 0 auto; }
-  .back { margin-top: 32px; text-align: center; }
+
+  /* footer link */
+  .back {
+    margin-top: 32px;
+    text-align: center;
+  }
   .back a {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
@@ -236,7 +311,13 @@
     text-decoration: none;
   }
   .back a:hover { color: var(--text); }
-  .success { display: none; text-align: center; padding: 14px 0 6px; }
+
+  /* success state */
+  .success {
+    display: none;
+    text-align: center;
+    padding: 14px 0 6px;
+  }
   .success.on { display: block; }
   .success .check-mark {
     width: 56px; height: 56px;
@@ -248,34 +329,18 @@
     font-family: 'Archivo Black', sans-serif;
     font-size: 24px;
   }
-  /* site footer */
-  .site-footer {
-    border-top: 1px solid var(--rule);
-    padding: 40px 36px 48px;
-    text-align: center;
-  }
-  .site-footer .tagline {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 13px;
-    letter-spacing: 0.03em;
-    color: var(--text);
-    margin: 0 0 20px;
-  }
-  .site-footer .divider { border: none; border-top: 1px solid var(--rule); margin: 0 auto 20px; max-width: 480px; }
-  .site-footer .sub { font-size: 11.5px; color: var(--muted); line-height: 1.7; margin: 0; }
-  .site-footer .sub strong { color: var(--text); font-weight: 600; }
+
   @media (max-width: 560px) {
     .card { padding: 32px 24px 28px; }
     h1 { font-size: 30px; }
     .row.cols-2 { grid-template-columns: 1fr; }
     .nav { padding: 20px 22px; }
-    .site-footer { padding: 32px 22px 40px; }
   }
 </style>
 </head>
 <body>
   <header class="nav">
-    <a href="/" class="brand">FLAT<span class="accent">FINDER</span><span class="tm">™</span></a>
+    <div class="brand">FLAT<span class="accent">FINDER</span><span class="tm">™</span></div>
   </header>
 
   <main class="page">
@@ -286,39 +351,51 @@
         <p class="lede">Be first in line when Benny opens his doors. No spam — just your key to Toronto's hidden rental gems.</p>
 
         <form id="waitlist-form" novalidate>
+          <!-- name -->
           <div class="row">
             <label class="field-label" for="f-name">Your name</label>
             <input class="input" id="f-name" name="name" type="text" placeholder="First name is fine" autocomplete="given-name" required />
           </div>
+
+          <!-- email -->
           <div class="row">
             <label class="field-label" for="f-email">Email address</label>
             <input class="input" id="f-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
           </div>
+
+          <!-- city -->
           <div class="row">
             <label class="field-label" for="f-city">City</label>
-            <input class="input" id="f-city" name="city" type="text" placeholder="Toronto" required />
+            <input class="input" id="f-city" name="city" type="text" placeholder="" required />
           </div>
+
+          <!-- date of move -->
           <div class="row">
             <label class="field-label" for="f-date">Date of move</label>
             <input class="input" id="f-date" name="moveDate" type="date" required />
           </div>
+
+          <!-- budget -->
           <div class="row">
             <label class="field-label" for="f-budget">Budget</label>
-            <input class="input" id="f-budget" name="budget" type="text" placeholder="e.g. $2,200 / month" required />
+            <input class="input" id="f-budget" name="budget" type="text" placeholder="" required />
           </div>
+
+          <!-- household / bedrooms / bathrooms -->
           <div class="row">
             <label class="field-label">Household size</label>
             <div class="counter" data-counter="household" data-min="1" data-max="12">
-              <button type="button" data-act="dec" aria-label="Decrease household">&#8722;</button>
+              <button type="button" data-act="dec" aria-label="Decrease household">−</button>
               <div class="value text"><span data-display>1</span>&nbsp;person</div>
               <button type="button" data-act="inc" aria-label="Increase household">+</button>
             </div>
           </div>
+
           <div class="row cols-2">
             <div>
               <label class="field-label">Bedrooms</label>
               <div class="counter" data-counter="bedrooms" data-min="0" data-max="6" data-zero-label="Studio">
-                <button type="button" data-act="dec" aria-label="Decrease bedrooms">&#8722;</button>
+                <button type="button" data-act="dec" aria-label="Decrease bedrooms">−</button>
                 <div class="value"><span data-display>1</span></div>
                 <button type="button" data-act="inc" aria-label="Increase bedrooms">+</button>
               </div>
@@ -326,96 +403,99 @@
             <div>
               <label class="field-label">Bathrooms</label>
               <div class="counter" data-counter="bathrooms" data-min="1" data-max="5" data-step="0.5">
-                <button type="button" data-act="dec" aria-label="Decrease bathrooms">&#8722;</button>
+                <button type="button" data-act="dec" aria-label="Decrease bathrooms">−</button>
                 <div class="value"><span data-display>1</span></div>
                 <button type="button" data-act="inc" aria-label="Increase bathrooms">+</button>
               </div>
             </div>
           </div>
+
+          <!-- neighbourhood -->
           <div class="row">
             <label class="field-label" for="f-neighbourhood">Neighbourhood</label>
-            <input class="input" id="f-neighbourhood" name="neighbourhood" type="text" placeholder="e.g. Leslieville, Kensington" required />
-          </div>
-          <div class="row">
-            <label class="field-label" for="f-source">How did you find FlatFinder?</label>
-            <input class="input" id="f-source" name="source" type="text" placeholder="Instagram, friend, Google…" />
+            <input class="input" id="f-neighbourhood" name="neighbourhood" type="text" placeholder="" required />
           </div>
 
+          <!-- how did you find -->
+          <div class="row">
+            <label class="field-label" for="f-source">How did you find FlatFinder?</label>
+            <input class="input" id="f-source" name="source" type="text" placeholder="" />
+          </div>
+
+          <!-- consents -->
           <div class="consents">
             <label class="check">
               <input type="checkbox" id="c-tos" required />
               <span class="box" aria-hidden="true">
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.2 3.8 7.5 8.5 2.5" stroke="#1c1c20" stroke-width="1.6" stroke-linecap="square"/></svg>
               </span>
-              <span class="copy"><strong>I agree to the <a href="/terms">Terms of Service</a>.</strong></span>
+              <span class="copy">
+                <strong>I agree to the <a href="#">Terms of Service</a>.</strong>
+              </span>
             </label>
+
             <label class="check">
               <input type="checkbox" id="c-privacy" required />
               <span class="box" aria-hidden="true">
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.2 3.8 7.5 8.5 2.5" stroke="#1c1c20" stroke-width="1.6" stroke-linecap="square"/></svg>
               </span>
-              <span class="copy"><strong>I've read the <a href="/privacy">Privacy Policy</a>.</strong></span>
+              <span class="copy">
+                <strong>I've read the <a href="#">Privacy Policy</a>.</strong>
+              </span>
             </label>
           </div>
 
-          <div class="error-banner" id="error-banner"></div>
-
+          <!-- submit -->
           <button class="submit" type="submit" id="submit-btn">
-            <span id="btn-label">Secure my spot</span>
-            <span aria-hidden="true" id="btn-arrow">&#8594;</span>
+            <span>Secure my spot</span>
+            <span aria-hidden="true">→</span>
           </button>
 
+          <!-- assurances -->
           <div class="assurances">
-            <div class="assurance"><span class="arrow">&#8594;</span><span>Priority access when FlatFinder launches in 2026.</span></div>
-            <div class="assurance"><span class="arrow">&#8594;</span><span>Zero spam. One email when Benny is ready.</span></div>
-            <div class="assurance"><span class="arrow">&#8594;</span><span>Your data stays yours. No selling, ever.</span></div>
+            <div class="assurance"><span class="arrow">→</span><span>Priority access when FlatFinder launches in 2026.</span></div>
+            <div class="assurance"><span class="arrow">→</span><span>Zero spam. One email when Benny is ready.</span></div>
+            <div class="assurance"><span class="arrow">→</span><span>Your data stays yours. No selling, ever.</span></div>
           </div>
 
-          <div class="back"><a href="/">&#8592; Back to FlatFinder</a></div>
+          <div class="back">
+            <a href="#">← Back to FlatFinder</a>
+          </div>
         </form>
       </div>
 
+      <!-- success -->
       <div class="success" id="success-view">
         <div class="eyebrow">Confirmed</div>
-        <div class="check-mark">&#10003;</div>
+        <div class="check-mark">✓</div>
         <h1>You're <span class="accent">on the list.</span></h1>
         <p class="lede" style="margin-left:auto;margin-right:auto;">Benny will be in touch the moment we open the doors.</p>
-        <div class="back"><a href="/">&#8592; Back to FlatFinder</a></div>
+        <div class="back">
+          <a href="#" onclick="location.reload();return false;">← Back to FlatFinder</a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <p class="tagline">Canadian Kind, Scottish Strong. We finish the shot.</p>
-    <hr class="divider" />
-    <p class="sub">Based on true events. Sadly.</p>
-    <p class="sub" style="margin-top:10px;">
-      <strong>&#169; 2024&#8211;2026 Lila Olufemi Inglis Abegunrin</strong> &nbsp;&#183;&nbsp;
-      FlatFinder: Housing Revolutionised&#8482; Inc. &nbsp;&#183;&nbsp;
-      Trademarks and Patents Pending (CIPO) &nbsp;&#183;&nbsp;
-      REVOLUTIONISING LIFE SINCE 1982&#8482;
-    </p>
-  </footer>
-
 <script>
 (function () {
-  var SUPABASE_URL = 'https://ygdmttxegqiqzdiumaif.supabase.co';
-  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlnZG10dHhlZ3FpcXpkaXVtYWlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDczNTksImV4cCI6MjA4NzE4MzM1OX0.Rj09RopXbaKPg_ppJTZ0O5yn56ohstpbu8fKipcCIIU';
-
-  /* ---- Counters ---- */
+  // ---- Counters ----
   document.querySelectorAll('.counter').forEach(function (el) {
     var min = parseFloat(el.dataset.min || '0');
     var max = parseFloat(el.dataset.max || '10');
     var step = parseFloat(el.dataset.step || '1');
     var zeroLabel = el.dataset.zeroLabel || null;
     var display = el.querySelector('[data-display]');
-    var value = parseFloat(display.textContent) || min;
+    var initial = parseFloat(display.textContent || '1');
+    var value = isNaN(initial) ? min : initial;
+
     var dec = el.querySelector('[data-act="dec"]');
     var inc = el.querySelector('[data-act="inc"]');
 
     function fmt(v) {
       if (v === 0 && zeroLabel) return zeroLabel;
-      return Number.isInteger(v) ? String(v) : v.toFixed(1);
+      if (Number.isInteger(v)) return String(v);
+      return v.toFixed(1);
     }
     function render() {
       display.textContent = fmt(value);
@@ -423,97 +503,39 @@
       inc.disabled = value >= max;
       el.dataset.value = String(value);
     }
-    dec.addEventListener('click', function () { value = Math.max(min, +(value - step).toFixed(2)); render(); });
-    inc.addEventListener('click', function () { value = Math.min(max, +(value + step).toFixed(2)); render(); });
+    dec.addEventListener('click', function () {
+      value = Math.max(min, +(value - step).toFixed(2));
+      render();
+    });
+    inc.addEventListener('click', function () {
+      value = Math.min(max, +(value + step).toFixed(2));
+      render();
+    });
     render();
   });
 
-  function getCounter(name) {
-    var el = document.querySelector('[data-counter="' + name + '"]');
-    return el ? el.dataset.value : '';
-  }
-  function setLoading(on) {
-    var btn = document.getElementById('submit-btn');
-    document.getElementById('btn-label').textContent = on ? 'Submitting…' : 'Secure my spot';
-    document.getElementById('btn-arrow').style.display = on ? 'none' : '';
-    btn.disabled = on;
-  }
-  function showError(msg) {
-    var b = document.getElementById('error-banner');
-    b.textContent = msg;
-    b.classList.add('visible');
-  }
-  function clearError() {
-    document.getElementById('error-banner').classList.remove('visible');
-  }
-
-  /* ---- Submit ---- */
-  document.getElementById('waitlist-form').addEventListener('submit', function (e) {
+  // ---- Submit ----
+  var form = document.getElementById('waitlist-form');
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
-    clearError();
-
-    var required = ['f-name','f-email','f-city','f-date','f-budget','f-neighbourhood'];
     var ok = true;
-    required.forEach(function (id) {
+    ['f-name','f-email','f-city','f-date','f-budget','f-neighbourhood'].forEach(function (id) {
       var el = document.getElementById(id);
-      if (!el.value.trim()) { el.classList.add('invalid'); ok = false; }
-      else { el.classList.remove('invalid'); }
+      if (!el.value) {
+        el.style.borderColor = 'var(--accent)';
+        ok = false;
+      } else {
+        el.style.borderColor = '';
+      }
     });
-    if (!document.getElementById('c-tos').checked || !document.getElementById('c-privacy').checked) {
-      showError('Please agree to the Terms of Service and Privacy Policy to continue.');
-      ok = false;
-    }
+    if (!document.getElementById('c-tos').checked) ok = false;
+    if (!document.getElementById('c-privacy').checked) ok = false;
+
     if (!ok) return;
 
-    var payload = {
-      name:           document.getElementById('f-name').value.trim(),
-      email:          document.getElementById('f-email').value.trim(),
-      city:           document.getElementById('f-city').value.trim(),
-      move_date:      document.getElementById('f-date').value,
-      budget:         document.getElementById('f-budget').value.trim(),
-      household_size: getCounter('household'),
-      bedrooms:       getCounter('bedrooms'),
-      bathrooms:      getCounter('bathrooms'),
-      neighbourhood:  document.getElementById('f-neighbourhood').value.trim(),
-      source:         document.getElementById('f-source').value.trim() || null
-    };
-
-    setLoading(true);
-
-    fetch(SUPABASE_URL + '/rest/v1/waitlist', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(function (res) {
-      if (res.status === 201 || res.status === 200) {
-        document.getElementById('form-view').style.display = 'none';
-        document.getElementById('success-view').classList.add('on');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (res.status === 409) {
-        setLoading(false);
-        showError('That email is already on the waitlist. Check your inbox for a confirmation.');
-      } else {
-        return res.json().then(function (b) { throw new Error(b.message || b.error || 'Submission failed.'); });
-      }
-    })
-    .catch(function (err) {
-      setLoading(false);
-      showError('Something went wrong. Please try again in a moment.');
-      console.error('[FlatFinder waitlist]', err);
-    });
-  });
-
-  ['f-name','f-email','f-city','f-date','f-budget','f-neighbourhood'].forEach(function (id) {
-    document.getElementById(id).addEventListener('input', function () {
-      this.classList.remove('invalid');
-      clearError();
-    });
+    document.getElementById('form-view').style.display = 'none';
+    document.getElementById('success-view').classList.add('on');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 })();
 </script>
