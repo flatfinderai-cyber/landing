@@ -1,312 +1,521 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlatFinder™ — Get Early Access</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #1a1a1e;
-      --bg2: #212127;
-      --surface: #2a2a32;
-      --orange: #f07c2a;
-      --orange-dim: #c4621f;
-      --navy: #1e3a5f;
-      --white: #f2f0eb;
-      --grey: #9090a0;
-      --border: rgba(240,124,42,0.2);
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 24px;
-      position: relative;
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0.4;
-    }
-    .bg-glow {
-      position: fixed;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 700px;
-      height: 400px;
-      background: radial-gradient(ellipse, rgba(240,124,42,0.07) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 48px;
-      background: linear-gradient(to bottom, rgba(26,26,30,0.95) 0%, transparent 100%);
-      backdrop-filter: blur(8px);
-    }
-    .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: 3px;
-      color: var(--white);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--orange); }
-    .card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      padding: 60px 56px;
-      max-width: 520px;
-      width: 100%;
-      position: relative;
-      z-index: 2;
-      animation: fadeUp 0.8s ease both;
-    }
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--orange);
-    }
-    .eyebrow {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .eyebrow::before {
-      content: '';
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--orange);
-    }
-    h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 6vw, 4rem);
-      line-height: 0.95;
-      letter-spacing: 2px;
-      color: var(--white);
-      margin-bottom: 12px;
-    }
-    h1 span { color: var(--orange); }
-    .subtitle {
-      font-size: 0.95rem;
-      color: var(--grey);
-      line-height: 1.7;
-      margin-bottom: 40px;
-    }
-    .form-group { margin-bottom: 20px; }
-    label {
-      display: block;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--grey);
-      margin-bottom: 8px;
-    }
-    input[type="text"],
-    input[type="email"] {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      padding: 14px 16px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    input:focus { border-color: var(--orange); }
-    input::placeholder { color: rgba(144,144,160,0.5); }
-    .btn-submit {
-      width: 100%;
-      margin-top: 8px;
-      padding: 16px;
-      background: var(--orange);
-      color: #111;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    }
-    .btn-submit:hover { background: #fff; transform: translateY(-2px); }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .message {
-      margin-top: 20px;
-      padding: 14px 16px;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-      display: none;
-    }
-    .message.success {
-      display: block;
-      background: rgba(240,124,42,0.1);
-      border: 1px solid var(--orange);
-      color: var(--orange);
-    }
-    .message.error {
-      display: block;
-      background: rgba(200,50,50,0.1);
-      border: 1px solid rgba(200,50,50,0.5);
-      color: #e06060;
-    }
-    .back-link {
-      margin-top: 28px;
-      display: block;
-      text-align: center;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--grey);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .back-link:hover { color: var(--orange); }
-    .perks {
-      margin-top: 32px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding-top: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .perk {
-      display: flex;
-      gap: 12px;
-      font-size: 0.85rem;
-      color: rgba(242,240,235,0.65);
-      line-height: 1.5;
-    }
-    .perk::before {
-      content: '→';
-      color: var(--orange);
-      font-family: 'Space Mono', monospace;
-      flex-shrink: 0;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @media (max-width: 600px) {
-      nav { padding: 16px 20px; }
-      .card { padding: 40px 28px; }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FlatFinder™ — Join the Waitlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #1c1c20;
+    --card: #23232a;
+    --field: #2b2b34;
+    --field-border: #34343d;
+    --field-border-focus: #4a4b51;
+    --text: #ffffff;
+    --muted: #9091a0;
+    --dim: #6c6d78;
+    --accent: #ef7c2d;
+    --accent-soft: rgba(239,124,45,0.14);
+    --accent-line: rgba(239,124,45,0.55);
+    --rule: #2f2f37;
+    --error: #e05555;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 26px 36px;
+  }
+  .brand {
+    font-family: 'Archivo Black', sans-serif;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .brand .accent { color: var(--accent); }
+  .brand .tm {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: 8px;
+    vertical-align: top;
+    font-weight: 400;
+  }
+  .page {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 48px 24px 64px;
+  }
+  .card {
+    width: 100%;
+    max-width: 540px;
+    background: var(--card);
+    border-top: 2px solid var(--accent);
+    padding: 44px 44px 36px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent); }
+  h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: 0.005em;
+    margin: 0 0 16px;
+    color: var(--text);
+  }
+  h1 .accent { color: var(--accent); }
+  .lede { color: var(--muted); font-size: 13.5px; line-height: 1.6; margin: 0 0 32px; max-width: 38ch; }
+  form { display: block; }
+  .field-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 9px;
+  }
+  .input {
+    width: 100%;
+    background: var(--field);
+    border: 1px solid var(--field-border);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 13px 14px;
+    border-radius: 0;
+    outline: none;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .input::placeholder { color: var(--dim); }
+  .input:focus { border-color: var(--accent); background: #30303a; }
+  .input.invalid { border-color: var(--error); }
+  .row { margin-bottom: 18px; }
+  .row.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6); cursor: pointer; opacity: 0.7; }
+  input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+  .counter {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--field-border);
+    background: var(--field);
+    height: 46px;
+  }
+  .counter button {
+    flex: 0 0 42px;
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 120ms ease, color 120ms ease;
+  }
+  .counter button:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
+  .counter button:disabled { color: var(--dim); cursor: not-allowed; opacity: 0.5; }
+  .counter .value {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    font-size: 15px;
+    font-weight: 500;
+    border-left: 1px solid var(--field-border);
+    border-right: 1px solid var(--field-border);
+  }
+  .counter .value.text { font-size: 14px; }
+  .consents {
+    margin-top: 8px;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .check {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 12px;
+    align-items: start;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+  }
+  .check input { position: absolute; opacity: 0; pointer-events: none; }
+  .check .box {
+    width: 16px; height: 16px;
+    border: 1px solid var(--field-border-focus);
+    background: var(--field);
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 120ms ease;
+  }
+  .check .box svg { opacity: 0; transform: scale(0.6); transition: all 120ms ease; }
+  .check input:checked ~ .box { background: var(--accent); border-color: var(--accent); }
+  .check input:checked ~ .box svg { opacity: 1; transform: scale(1); }
+  .check input:focus-visible ~ .box { box-shadow: 0 0 0 3px var(--accent-soft); }
+  .check .copy { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .check .copy strong { color: var(--text); font-weight: 500; }
+  .check .copy a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent-line); }
+  .check .copy a:hover { border-bottom-style: solid; }
+  .error-banner {
+    display: none;
+    background: rgba(224,85,85,0.12);
+    border: 1px solid var(--error);
+    color: var(--error);
+    font-size: 12.5px;
+    padding: 12px 14px;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  .error-banner.visible { display: block; }
+  .submit {
+    margin-top: 28px;
+    width: 100%;
+    background: var(--accent);
+    color: #1c1c20;
+    border: 0;
+    padding: 16px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 120ms ease, transform 80ms ease, opacity 120ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .submit:hover:not(:disabled) { background: #ff8c3e; }
+  .submit:active:not(:disabled) { transform: translateY(1px); }
+  .submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .assurances { margin-top: 28px; display: flex; flex-direction: column; gap: 9px; }
+  .assurance { font-size: 12.5px; color: var(--muted); display: flex; gap: 12px; align-items: flex-start; }
+  .assurance .arrow { color: var(--accent); flex: 0 0 auto; }
+  .back { margin-top: 32px; text-align: center; }
+  .back a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+  }
+  .back a:hover { color: var(--text); }
+  .success { display: none; text-align: center; padding: 14px 0 6px; }
+  .success.on { display: block; }
+  .success .check-mark {
+    width: 56px; height: 56px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    margin: 0 auto 22px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 24px;
+  }
+  /* site footer */
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    padding: 40px 36px 48px;
+    text-align: center;
+  }
+  .site-footer .tagline {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--text);
+    margin: 0 0 20px;
+  }
+  .site-footer .divider { border: none; border-top: 1px solid var(--rule); margin: 0 auto 20px; max-width: 480px; }
+  .site-footer .sub { font-size: 11.5px; color: var(--muted); line-height: 1.7; margin: 0; }
+  .site-footer .sub strong { color: var(--text); font-weight: 600; }
+  @media (max-width: 560px) {
+    .card { padding: 32px 24px 28px; }
+    h1 { font-size: 30px; }
+    .row.cols-2 { grid-template-columns: 1fr; }
+    .nav { padding: 20px 22px; }
+    .site-footer { padding: 32px 22px 40px; }
+  }
+</style>
 </head>
 <body>
-  <div class="bg-glow"></div>
-  <nav>
-    <a href="flatfinder-landing.html" class="nav-logo">Flat<span>Finder</span> &trade;</a>
-  </nav>
+  <header class="nav">
+    <a href="/" class="brand">FLAT<span class="accent">FINDER</span><span class="tm">™</span></a>
+  </header>
 
-  <div class="card">
-    <p class="eyebrow">Early Access</p>
-    <h1>Join The <span>Waitlist.</span></h1>
-    <p class="subtitle">Be first in line when Benny opens his doors. No spam — just your key to Toronto's hidden rental gems.</p>
+  <main class="page">
+    <section class="card" id="card">
+      <div id="form-view">
+        <div class="eyebrow">Early Access</div>
+        <h1>Join the <span class="accent">waitlist.</span></h1>
+        <p class="lede">Be first in line when Benny opens his doors. No spam — just your key to Toronto's hidden rental gems.</p>
 
-    <form id="signup-form">
-      <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" placeholder="First name is fine" required>
+        <form id="waitlist-form" novalidate>
+          <div class="row">
+            <label class="field-label" for="f-name">Your name</label>
+            <input class="input" id="f-name" name="name" type="text" placeholder="First name is fine" autocomplete="given-name" required />
+          </div>
+          <div class="row">
+            <label class="field-label" for="f-email">Email address</label>
+            <input class="input" id="f-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+          <div class="row">
+            <label class="field-label" for="f-city">City</label>
+            <input class="input" id="f-city" name="city" type="text" placeholder="Toronto" required />
+          </div>
+          <div class="row">
+            <label class="field-label" for="f-date">Date of move</label>
+            <input class="input" id="f-date" name="moveDate" type="date" required />
+          </div>
+          <div class="row">
+            <label class="field-label" for="f-budget">Budget</label>
+            <input class="input" id="f-budget" name="budget" type="text" placeholder="e.g. $2,200 / month" required />
+          </div>
+          <div class="row">
+            <label class="field-label">Household size</label>
+            <div class="counter" data-counter="household" data-min="1" data-max="12">
+              <button type="button" data-act="dec" aria-label="Decrease household">&#8722;</button>
+              <div class="value text"><span data-display>1</span>&nbsp;person</div>
+              <button type="button" data-act="inc" aria-label="Increase household">+</button>
+            </div>
+          </div>
+          <div class="row cols-2">
+            <div>
+              <label class="field-label">Bedrooms</label>
+              <div class="counter" data-counter="bedrooms" data-min="0" data-max="6" data-zero-label="Studio">
+                <button type="button" data-act="dec" aria-label="Decrease bedrooms">&#8722;</button>
+                <div class="value"><span data-display>1</span></div>
+                <button type="button" data-act="inc" aria-label="Increase bedrooms">+</button>
+              </div>
+            </div>
+            <div>
+              <label class="field-label">Bathrooms</label>
+              <div class="counter" data-counter="bathrooms" data-min="1" data-max="5" data-step="0.5">
+                <button type="button" data-act="dec" aria-label="Decrease bathrooms">&#8722;</button>
+                <div class="value"><span data-display>1</span></div>
+                <button type="button" data-act="inc" aria-label="Increase bathrooms">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <label class="field-label" for="f-neighbourhood">Neighbourhood</label>
+            <input class="input" id="f-neighbourhood" name="neighbourhood" type="text" placeholder="e.g. Leslieville, Kensington" required />
+          </div>
+          <div class="row">
+            <label class="field-label" for="f-source">How did you find FlatFinder?</label>
+            <input class="input" id="f-source" name="source" type="text" placeholder="Instagram, friend, Google…" />
+          </div>
+
+          <div class="consents">
+            <label class="check">
+              <input type="checkbox" id="c-tos" required />
+              <span class="box" aria-hidden="true">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.2 3.8 7.5 8.5 2.5" stroke="#1c1c20" stroke-width="1.6" stroke-linecap="square"/></svg>
+              </span>
+              <span class="copy"><strong>I agree to the <a href="/terms">Terms of Service</a>.</strong></span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="c-privacy" required />
+              <span class="box" aria-hidden="true">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.2 3.8 7.5 8.5 2.5" stroke="#1c1c20" stroke-width="1.6" stroke-linecap="square"/></svg>
+              </span>
+              <span class="copy"><strong>I've read the <a href="/privacy">Privacy Policy</a>.</strong></span>
+            </label>
+          </div>
+
+          <div class="error-banner" id="error-banner"></div>
+
+          <button class="submit" type="submit" id="submit-btn">
+            <span id="btn-label">Secure my spot</span>
+            <span aria-hidden="true" id="btn-arrow">&#8594;</span>
+          </button>
+
+          <div class="assurances">
+            <div class="assurance"><span class="arrow">&#8594;</span><span>Priority access when FlatFinder launches in 2026.</span></div>
+            <div class="assurance"><span class="arrow">&#8594;</span><span>Zero spam. One email when Benny is ready.</span></div>
+            <div class="assurance"><span class="arrow">&#8594;</span><span>Your data stays yours. No selling, ever.</span></div>
+          </div>
+
+          <div class="back"><a href="/">&#8592; Back to FlatFinder</a></div>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="you@example.com" required>
+
+      <div class="success" id="success-view">
+        <div class="eyebrow">Confirmed</div>
+        <div class="check-mark">&#10003;</div>
+        <h1>You're <span class="accent">on the list.</span></h1>
+        <p class="lede" style="margin-left:auto;margin-right:auto;">Benny will be in touch the moment we open the doors.</p>
+        <div class="back"><a href="/">&#8592; Back to FlatFinder</a></div>
       </div>
-      <button type="submit" class="btn-submit" id="submit-btn">Secure My Spot &rarr;</button>
-      <div class="message" id="msg"></div>
-    </form>
+    </section>
+  </main>
 
-    <div class="perks">
-      <div class="perk">Priority access when FlatFinder launches in 2026</div>
-      <div class="perk">Zero spam. One email when Benny is ready.</div>
-      <div class="perk">Your data stays yours. No selling, ever.</div>
-    </div>
+  <footer class="site-footer">
+    <p class="tagline">Canadian Kind, Scottish Strong. We finish the shot.</p>
+    <hr class="divider" />
+    <p class="sub">Based on true events. Sadly.</p>
+    <p class="sub" style="margin-top:10px;">
+      <strong>&#169; 2024&#8211;2026 Lila Olufemi Inglis Abegunrin</strong> &nbsp;&#183;&nbsp;
+      FlatFinder: Housing Revolutionised&#8482; Inc. &nbsp;&#183;&nbsp;
+      Trademarks and Patents Pending (CIPO) &nbsp;&#183;&nbsp;
+      REVOLUTIONISING LIFE SINCE 1982&#8482;
+    </p>
+  </footer>
 
-    <a href="flatfinder-landing.html" class="back-link">&larr; Back to FlatFinder</a>
-  </div>
+<script>
+(function () {
+  var SUPABASE_URL = 'https://ygdmttxegqiqzdiumaif.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlnZG10dHhlZ3FpcXpkaXVtYWlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDczNTksImV4cCI6MjA4NzE4MzM1OX0.Rj09RopXbaKPg_ppJTZ0O5yn56ohstpbu8fKipcCIIU';
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  /* ---- Counters ---- */
+  document.querySelectorAll('.counter').forEach(function (el) {
+    var min = parseFloat(el.dataset.min || '0');
+    var max = parseFloat(el.dataset.max || '10');
+    var step = parseFloat(el.dataset.step || '1');
+    var zeroLabel = el.dataset.zeroLabel || null;
+    var display = el.querySelector('[data-display]');
+    var value = parseFloat(display.textContent) || min;
+    var dec = el.querySelector('[data-act="dec"]');
+    var inc = el.querySelector('[data-act="inc"]');
 
-    const SUPABASE_URL = 'https://pkjpmwwhehohaskgjcdt.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_NJkVzEtL4MYgcQP4hKOy3w_ZFZQUCfz';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    function fmt(v) {
+      if (v === 0 && zeroLabel) return zeroLabel;
+      return Number.isInteger(v) ? String(v) : v.toFixed(1);
+    }
+    function render() {
+      display.textContent = fmt(value);
+      dec.disabled = value <= min;
+      inc.disabled = value >= max;
+      el.dataset.value = String(value);
+    }
+    dec.addEventListener('click', function () { value = Math.max(min, +(value - step).toFixed(2)); render(); });
+    inc.addEventListener('click', function () { value = Math.min(max, +(value + step).toFixed(2)); render(); });
+    render();
+  });
 
-    const form = document.getElementById('signup-form');
-    const btn = document.getElementById('submit-btn');
-    const msg = document.getElementById('msg');
+  function getCounter(name) {
+    var el = document.querySelector('[data-counter="' + name + '"]');
+    return el ? el.dataset.value : '';
+  }
+  function setLoading(on) {
+    var btn = document.getElementById('submit-btn');
+    document.getElementById('btn-label').textContent = on ? 'Submitting…' : 'Secure my spot';
+    document.getElementById('btn-arrow').style.display = on ? 'none' : '';
+    btn.disabled = on;
+  }
+  function showError(msg) {
+    var b = document.getElementById('error-banner');
+    b.textContent = msg;
+    b.classList.add('visible');
+  }
+  function clearError() {
+    document.getElementById('error-banner').classList.remove('visible');
+  }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
+  /* ---- Submit ---- */
+  document.getElementById('waitlist-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    clearError();
 
-      btn.disabled = true;
-      btn.textContent = 'Adding you...';
-      msg.className = 'message';
-      msg.style.display = 'none';
-
-      try {
-        const { error } = await supabase
-          .from('waitlist')
-          .insert([{ name, email }]);
-
-        if (error) {
-          if (error.code === '23505') {
-            msg.textContent = "You're already on the list! Benny remembers you.";
-          } else {
-            msg.textContent = 'Something went wrong. Please try again.';
-          }
-          msg.className = 'message error';
-        } else {
-          msg.textContent = "You're on the list! Benny will be in touch when it's time.";
-          msg.className = 'message success';
-          form.reset();
-        }
-      } catch (err) {
-        msg.textContent = 'Network error. Please try again.';
-        msg.className = 'message error';
-      }
-
-      btn.disabled = false;
-      btn.textContent = 'Secure My Spot →';
+    var required = ['f-name','f-email','f-city','f-date','f-budget','f-neighbourhood'];
+    var ok = true;
+    required.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el.value.trim()) { el.classList.add('invalid'); ok = false; }
+      else { el.classList.remove('invalid'); }
     });
-  </script>
+    if (!document.getElementById('c-tos').checked || !document.getElementById('c-privacy').checked) {
+      showError('Please agree to the Terms of Service and Privacy Policy to continue.');
+      ok = false;
+    }
+    if (!ok) return;
+
+    var payload = {
+      name:           document.getElementById('f-name').value.trim(),
+      email:          document.getElementById('f-email').value.trim(),
+      city:           document.getElementById('f-city').value.trim(),
+      move_date:      document.getElementById('f-date').value,
+      budget:         document.getElementById('f-budget').value.trim(),
+      household_size: getCounter('household'),
+      bedrooms:       getCounter('bedrooms'),
+      bathrooms:      getCounter('bathrooms'),
+      neighbourhood:  document.getElementById('f-neighbourhood').value.trim(),
+      source:         document.getElementById('f-source').value.trim() || null
+    };
+
+    setLoading(true);
+
+    fetch(SUPABASE_URL + '/rest/v1/waitlist', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(function (res) {
+      if (res.status === 201 || res.status === 200) {
+        document.getElementById('form-view').style.display = 'none';
+        document.getElementById('success-view').classList.add('on');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (res.status === 409) {
+        setLoading(false);
+        showError('That email is already on the waitlist. Check your inbox for a confirmation.');
+      } else {
+        return res.json().then(function (b) { throw new Error(b.message || b.error || 'Submission failed.'); });
+      }
+    })
+    .catch(function (err) {
+      setLoading(false);
+      showError('Something went wrong. Please try again in a moment.');
+      console.error('[FlatFinder waitlist]', err);
+    });
+  });
+
+  ['f-name','f-email','f-city','f-date','f-budget','f-neighbourhood'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', function () {
+      this.classList.remove('invalid');
+      clearError();
+    });
+  });
+})();
+</script>
 </body>
 </html>
